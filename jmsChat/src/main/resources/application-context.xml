@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   					   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="JmsProviderJboss" class="jms.web.jms.JmsProviderJboss" />
+
+	<bean id="JmsProviderActiveMQ" class="jms.web.jms.JmsProviderActiveMQ">
+		<constructor-arg name="activeMQConnectionFactory" ref="activeMQConnectionFactory" />
+	</bean>
+	
+	<bean id="activeMQConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<constructor-arg name="brokerURL" value="vm://localhost" />
+	</bean>
+
+	<bean id="JmsProviderWebLogic" class="jms.web.jms.JmsProviderWebLogic">
+		<constructor-arg name="url" value="t3://127.0.0.1:7003" />
+	</bean>
+	
+	<bean id="jmsManager" class="jms.web.jms.JmsManager">
+		<constructor-arg name="jmsProvider" ref="${jms.provider}" />
+	</bean>
+
+</beans>

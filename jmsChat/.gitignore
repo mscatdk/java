@@ -1,0 +1,17 @@
+# Eclipse / Maven #
+#################################
+target
+.project
+.classpath
+.settings
+
+# Gulp Build System #
+#################################
+node_modules/
+bower_components/
+build/
+dist/
+*.css.map
+gulp/vendor
+gulp/dist
+.bowerrc

@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+     <groupId>com.maven</groupId>
+     <artifactId>parent</artifactId>
+     <version>0.0.1-SNAPSHOT</version>
+   </parent>
+  <artifactId>packageEAR</artifactId>
+  <packaging>ear</packaging>
+
+  <name>packageEAR</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+    <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-ear-plugin</artifactId>
+        <version>2.10</version>
+        <configuration>
+          <modules>
+            <webModule>
+              <groupId>com.maven</groupId>
+              <artifactId>webApp1</artifactId>
+              <bundleFileName>webApp1-${app.version}.war</bundleFileName>
+              <contextRoot>/webApp1</contextRoot>
+            </webModule>
+            <webModule>
+              <groupId>com.maven</groupId>
+              <artifactId>webApp2</artifactId>
+              <bundleFileName>webApp2-${app.version}.war</bundleFileName>
+              <contextRoot>/webApp2</contextRoot>
+            </webModule>
+          </modules>
+          <displayName>My Ear Name displayed in the App Server</displayName>
+          <!-- If I want maven to generate the application.xml, set this to true -->
+          <generateApplicationXml>true</generateApplicationXml>
+        </configuration>
+      </plugin>
+    </plugins>
+    <finalName>testApp</finalName>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.maven</groupId>
+      <artifactId>webApp1</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>com.maven</groupId>
+      <artifactId>webApp2</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
+  </dependencies>
+</project>

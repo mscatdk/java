@@ -1,0 +1,1 @@
+mvn clean install com.oracle.weblogic:weblogic-maven-plugin:deploy -PWebLogic

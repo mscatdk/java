@@ -1,0 +1,28 @@
+{
+  "name": "JavaJmsChat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mscatdk/JavaJmsChat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mscatdk/JavaJmsChat/issues"
+  },
+  "homepage": "https://github.com/mscatdk/JavaJmsChat",
+  "devDependencies": {
+    "del": "^2.2.0",
+    "gulp": "gulpjs/gulp#4.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-inject": "^3.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.1",
+    "main-bower-files": "^2.11.0"
+  }
+}
