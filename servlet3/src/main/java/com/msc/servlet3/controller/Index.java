@@ -22,7 +22,7 @@ public class Index extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.warning("GET -> BEGIN");
     	
-        request.setAttribute("message", "LOL");
+        request.setAttribute("message", "<h1> Demo </h1> <script> alert('I am an alert box!'); </script>");
         request.getRequestDispatcher("/index.jsp").forward(request, response);
         
         LOGGER.info("GET -> BEGIN");

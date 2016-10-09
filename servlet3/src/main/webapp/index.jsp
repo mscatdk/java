@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <link rel='stylesheet' href='<%= org.webjars.AssetLocator.getWebJarPath("css/bootstrap.min.css") %>'>
@@ -18,6 +19,10 @@
     Glyphicons support: <span class="glyphicon glyphicon-ok"></span> 
     <p>Bootstrap is the most popular HTML, CSS, and JS framework for developing
     responsive, mobile-first projects on the web.</p> 
+  </div>
+  
+  <div>
+  	<c:out value="${message}" default="!!!! NO DATA !!!" />
   </div>
 </div>
 
