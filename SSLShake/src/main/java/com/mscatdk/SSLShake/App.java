@@ -2,6 +2,7 @@ package com.mscatdk.SSLShake;
 
 import java.io.IOException;
 
+import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpHead;
@@ -31,7 +32,9 @@ public class App {
 			HttpHead httpHead = new HttpHead(String.format("https://%s:%s", args[0], args[1]));
 			try (CloseableHttpResponse response = client.execute(httpHead)) {
 				System.out.println(response.getStatusLine().toString());
-				System.out.println("Connected Succesfully");
+				System.out.println("Connected Succesfully - HTTP");
+			} catch (NoHttpResponseException e) {
+				System.out.println("Connected Succesfully - NOT HTTP");
 			}
 		}
 	}
