@@ -411,6 +411,7 @@ public class Customer extends org.apache.avro.specific.SpecificRecordBase implem
       return this;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public Customer build() {
       try {

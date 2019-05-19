@@ -23,6 +23,13 @@ bin/kafka-topics.sh --create --bootstrap-server [host:port] --replication-factor
 mvn clean install
 ````
 
+## Generate Java Classes
+
+````Bash
+# URL: http://repo1.maven.org/maven2/org/apache/avro/avro-tools/
+java -jar ./avro-tools-1.8.2.jar compile schema src/main/avro/customer.avro src/main/java
+````
+
 ## Run
 
 ````Bash
