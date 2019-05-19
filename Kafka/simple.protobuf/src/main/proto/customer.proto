@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package com.mscatdk.kafka.model;
+
+option java_package = "com.mscatdk.kafka.model";
+option java_outer_classname = "CustomerProtos";
+
+message Customer {
+	required string id = 1;
+	required string name = 2;
+	required string address = 3;
+	optional int32 age = 4; 
+}
