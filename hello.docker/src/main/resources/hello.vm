@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<title>Hello Docker!</title>
+	</head>
+	<body>
+		<h1>Hello Docker</h1>
+		
+		<section>
+			<h3>General</h3>
+			<ul>
+				<li>Hostname: $hostname</li>
+				<li>Client IP: $client_ip</li>
+				<li>Version: ${project.version}</li>
+			</ul>
+		</section>
+		
+		<section>
+		<h3>Headers</h3>
+		<ul>
+		#foreach ($rno in $headers.keySet())
+			<li>$rno:  $headers.get($rno)</li>
+		#end
+		</ul>
+		</section>
+	</body>
+</html>
