@@ -18,6 +18,7 @@ public class App {
 	private static Logger logger = LoggerFactory.getLogger(App.class);
 	
 	private static final String HELLO_URL = "/hello";
+	private static final String HEALTH_CHECK_URL = "/health";
 	
     public static void main( String[] args ) {
     	logger.info("Starting...");
@@ -27,6 +28,8 @@ public class App {
     	get(HELLO_URL, halloAPI.handleHalloHTML, new VelocityTemplateEngine());
     	get(HELLO_URL, "*/*", halloAPI.handleHalloHTML, new VelocityTemplateEngine());
     	get(HELLO_URL, "application/json", halloAPI.handleHalloJSON, new JsonTransformer());
+    	 
+    	get(HEALTH_CHECK_URL, (req, res) -> "OK" );
     	
     	logger.info("Ready!");
     }
