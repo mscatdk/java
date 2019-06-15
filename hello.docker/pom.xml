@@ -5,7 +5,7 @@
 	<groupId>com.mscatdk.docker</groupId>
 	<artifactId>hello.docker</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<name>hallo.docker</name>
 	<url>http://maven.apache.org</url>
 
