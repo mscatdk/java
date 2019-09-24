@@ -1,20 +1,21 @@
 # simple.avro
 
-Show how to send avro messages via. Kafka
+Show how to send avro messages via. Confluent Kafka
 
-## Kafka Configuration
-
-ZooKeeper and Kafka must be running and a Kafka topic must exists
+## Confluent Kafka Configuration
 
 ````Bash
-# Start ZooKeeper
-bin/zookeeper-server-start.sh config/zookeeper.properties
+git clone https://github.com/confluentinc/examples
+cd examples/
 
-# Start Kafka Server
-bin/kafka-server-start.sh config/server.properties
+git checkout 5.3.1-post
+cd cp-all-in-one
 
-# Create Topic
-bin/kafka-topics.sh --create --bootstrap-server [host:port] --replication-factor 1 --partitions 1 --topic [topic]
+# Start the Confluent containers
+docker-compose up -d --build
+docker-compose ps
+
+# Create the topic via. the Control Center on http://10.11.12.31:9021
 ````
 
 ## Build
@@ -34,11 +35,8 @@ java -jar ./avro-tools-1.8.2.jar compile schema src/main/avro/customer.avro src/
 
 ````Bash
 # Send default message
-java -jar target/simple.avro-1.0-SNAPSHOT-jar-with-dependencies.jar -h [host:port] -t [topic] put
-
-# Send user defined message
-java -jar target/simple.avro-1.0-SNAPSHOT-jar-with-dependencies.jar -h [host:port] -t [topic] put -d "{ \"id\": \"t\", \"name\": \"de\", \"address\": \"jkjk\", \"age\": {\"int\": 32} }"
+java -jar target/confluent.avro-1.0-SNAPSHOT-jar-with-dependencies.jar -h [host:port] -t [topic] put
 
 # Retrieve messages
-java -jar target/simple.avro-1.0-SNAPSHOT-jar-with-dependencies.jar -h [host:port] -t [topic] get
+java -jar target/confluent.avro-1.0-SNAPSHOT-jar-with-dependencies.jar -h [host:port] -t [topic] get
 ````
