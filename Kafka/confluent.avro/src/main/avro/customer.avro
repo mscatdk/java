@@ -1,0 +1,10 @@
+{"namespace": "com.mscatdk.kafka.model",
+ "type": "record",
+ "name": "Customer",
+ "fields": [
+     {"name": "id", "type": "string"},
+     {"name": "name", "type": "string"},
+     {"name": "address", "type": "string"},
+     {"name": "age",  "type": ["int", "null"]}
+ ]
+}
