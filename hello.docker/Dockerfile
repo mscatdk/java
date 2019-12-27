@@ -1,12 +1,17 @@
 FROM maven:3.6.1-jdk-11-slim AS BUILD
-COPY pom.xml /tmp
-COPY src /tmp/src
 
 WORKDIR /tmp
 
+# Cache Dependencies
+COPY pom.xml .
+# Run a fake build as mvn dependency:resolve-plugins dependency:go-offline doesn't download all dependencies
 RUN mvn clean install
 
-FROM openjdk:8-jdk-stretch
+# Build App
+COPY src /tmp/src
+RUN mvn clean install
+
+FROM openjdk:8-jre-alpine
 COPY --from=BUILD /tmp/target/*-jar-with-dependencies.jar /tmp/hallo.docker.jar
 WORKDIR /tmp
 
