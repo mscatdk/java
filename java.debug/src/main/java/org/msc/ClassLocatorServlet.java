@@ -39,6 +39,8 @@ public class ClassLocatorServlet extends HttpServlet {
     				out.println(String.format("Class Name: %s not found!", className));
     			}
     		}
+    	} catch (Exception e) {
+    		logger.error("Unable to process the request!", e);
     	}
         
         logger.debug("ClassLocatorServlet -> END");

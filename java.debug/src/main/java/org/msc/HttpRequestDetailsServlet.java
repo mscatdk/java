@@ -26,12 +26,35 @@ public class HttpRequestDetailsServlet extends HttpServlet {
 	private static final long serialVersionUID = -6384777523159040774L;
 	private static Logger logger = LoggerFactory.getLogger(ClassLocatorServlet.class);
 	
-	private Gson gson = new Gson();
+	private static Gson gson = new Gson();
 	
 	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	logger.debug("HttpRequestDetailsServlet -> BEGIN");
-    	Map<String, Map<String, String>> data = new HashMap<>();
+    	processRequest(request, response);
+    }
+
+	@Override
+    protected void doHead(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	processRequest(request, response);
+    }
+
+	@Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	processRequest(request, response);
+    }
+	
+	@Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	processRequest(request, response);
+    }
+	
+	@Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	processRequest(request, response);
+    }
+	
+	private void processRequest(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Map<String, String>> data = new HashMap<>();
     	
     	data.put("general", extractGeneralInformation(request));
     	data.put("properties", extractProperties());
@@ -43,10 +66,10 @@ public class HttpRequestDetailsServlet extends HttpServlet {
     		String json = gson.toJson(data);
     		out.print(json);
     		logger.info(json);
+    	} catch (Exception e) {
+    		logger.error("Unable to write message!", e);
     	}
-        
-        logger.debug("HttpRequestDetailsServlet -> END");
-    }
+	}
 	
 	private Map<String, String> extractAttributes(HttpServletRequest request) {
 		Map<String, String> attributes = new HashMap<>();
@@ -66,8 +89,10 @@ public class HttpRequestDetailsServlet extends HttpServlet {
 		
 		Cookie[] cookies =  request.getCookies();
 		
-		for (Cookie cookie : cookies) {
-			cookieData.put(cookie.getName(), gson.toJson(cookie));
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				cookieData.put(cookie.getName(), gson.toJson(cookie));
+			}
 		}
  		
 		return cookieData;
@@ -95,7 +120,7 @@ public class HttpRequestDetailsServlet extends HttpServlet {
 		general.put("remoteUser", request.getRemoteUser());
 		
 		general.put("httpMethod", request.getMethod());
-		general.put("requestedSessionId", request.getRequestedSessionId());
+		general.put("requestedSessionId", request.getSession(false).getId());
 		
 		return general;
 	}
