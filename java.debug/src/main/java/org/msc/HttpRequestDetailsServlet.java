@@ -7,6 +7,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +15,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,9 +120,21 @@ public class HttpRequestDetailsServlet extends HttpServlet {
 		general.put("remoteHost", request.getRemoteHost());
 		general.put("remotePort", Integer.toString(request.getRemotePort()));
 		general.put("remoteUser", request.getRemoteUser());
-		
 		general.put("httpMethod", request.getMethod());
-		general.put("requestedSessionId", request.getSession(false).getId());
+		
+		
+		try {
+			String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+			general.put("httpBody", body);
+		} catch (Exception e) {
+			logger.error("Unable to read body!", e);
+		}
+		
+		
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			general.put("requestedSessionId", session.getId());
+		}
 		
 		return general;
 	}
