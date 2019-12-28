@@ -10,8 +10,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 import com.mscatdk.security.rsa.KeyPairHandler;
 
+@Parameters(commandDescription = "Validate JWT based on a RSA public key")
 public class ValidateJWT extends DefaultCommand implements CommandInterface {
 	
 	private static KeyPairHandler keyPairHandler = new KeyPairHandler();

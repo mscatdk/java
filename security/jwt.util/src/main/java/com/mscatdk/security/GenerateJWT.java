@@ -8,8 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.beust.jcommander.Parameters;
 import com.mscatdk.security.rsa.KeyPairHandler;
 
+@Parameters(commandDescription = "Generate JWT based on a RSA key-pair")
 public class GenerateJWT extends DefaultCommand implements CommandInterface {
 
 	private static KeyPairHandler keyPairHandler = new KeyPairHandler();
