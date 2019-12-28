@@ -33,7 +33,7 @@ public class Authorization {
 	private static Logger logger = LoggerFactory.getLogger(Authorization.class);
 	
 	private final BasePdpEngine pdp;
-	private static final AttributeDatatype<StringValue> CUSTOM_DATA_TYPE = new AttributeDatatype<>(StringValue.class, XacmlDatatypeId.STRING.value(), "demo.test.nu");
+	private static final AttributeDatatype<StringValue> CUSTOM_DATA_TYPE = new AttributeDatatype<>(StringValue.class, XacmlDatatypeId.STRING.value(), "http.method");
 	private static Authorization authorization;
 	
 	static {
@@ -95,7 +95,7 @@ public class Authorization {
 		requestBuilder.putNamedAttributeIfAbsent(resourceIdAttributeId, resourceIdAttributeValues);
 
 		// Add action ID attribute
-		final AttributeFqn actionIdAttributeId = AttributeFqns.newInstance(XACML_3_0_ACTION.value(), Optional.empty(), "demo.test.nu");
+		final AttributeFqn actionIdAttributeId = AttributeFqns.newInstance(XACML_3_0_ACTION.value(), Optional.empty(), "http.method");
 		final AttributeBag<?> actionIdAttributeValues = Bags.singletonAttributeBag(CUSTOM_DATA_TYPE, new StringValue(action));
 		requestBuilder.putNamedAttributeIfAbsent(actionIdAttributeId, actionIdAttributeValues);
 

@@ -35,16 +35,17 @@ public class App {
     	
     	before((request, response) -> {    		
     		String auth = request.headers(HttpHeader.AUTHORIZATION.asString());
+    		
     		if (auth != null) {
-    			logger.info("Authorization header is set!");
-    			
     			DecodedJWT decodedJWT;
+
 				if ((decodedJWT = isJWTValid(auth)) != null && authorization.authorization(decodedJWT, request)) {
 					return;
+    			} else {
+    				logger.info("Rejecting JWT with header: {} and payload: {}", decodedJWT.getHeader(), decodedJWT.getPayload());
     			}
-    			
     		}
-    		    		
+    		
     	    halt(401, "You are not welcome here");
     	});
     	
@@ -56,7 +57,7 @@ public class App {
 	
 	private static DecodedJWT isJWTValid(String jwt) {
 		try {
-			logger.info("Token: {}", jwt);
+			logger.debug("Token: {}", jwt);
 			Base64.Decoder decoder = Base64.getDecoder();
 			X509EncodedKeySpec ks = new X509EncodedKeySpec(decoder.decode(PUBLIC_KEY_BASE64));
 			KeyFactory kf = KeyFactory.getInstance("RSA");
