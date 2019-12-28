@@ -121,22 +121,27 @@ public class HttpRequestDetailsServlet extends HttpServlet {
 		general.put("remotePort", Integer.toString(request.getRemotePort()));
 		general.put("remoteUser", request.getRemoteUser());
 		general.put("httpMethod", request.getMethod());
+				
+		setHttpBody(request, general);
+		setSessionId(request, general);
 		
-		
+		return general;
+	}
+
+	private void setSessionId(HttpServletRequest request, Map<String, String> general) {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			general.put("requestedSessionId", session.getId());
+		}
+	}
+
+	private void setHttpBody(HttpServletRequest request, Map<String, String> general) {
 		try {
 			String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 			general.put("httpBody", body);
 		} catch (Exception e) {
 			logger.error("Unable to read body!", e);
 		}
-		
-		
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			general.put("requestedSessionId", session.getId());
-		}
-		
-		return general;
 	}
     
     private Map<String, String> extractProperties() {

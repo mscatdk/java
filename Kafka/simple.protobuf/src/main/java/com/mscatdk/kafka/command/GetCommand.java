@@ -1,6 +1,5 @@
 package com.mscatdk.kafka.command;
 
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;

@@ -1,4 +1,4 @@
-package com.msc.http;
+package com.msc.http.client;
 
 import java.util.concurrent.TimeUnit;
 

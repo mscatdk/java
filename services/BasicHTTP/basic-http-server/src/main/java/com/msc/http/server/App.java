@@ -1,4 +1,4 @@
-package com.msc.http;
+package com.msc.http.server;
 
 import static spark.Spark.*;
 

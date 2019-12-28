@@ -4,7 +4,6 @@ import static org.ow2.authzforce.xacml.identifiers.XacmlAttributeCategory.XACML_
 import static org.ow2.authzforce.xacml.identifiers.XacmlAttributeCategory.XACML_3_0_ACTION;
 import static org.ow2.authzforce.xacml.identifiers.XacmlAttributeCategory.XACML_3_0_RESOURCE;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -12,7 +11,6 @@ import org.ow2.authzforce.core.pdp.api.AttributeFqn;
 import org.ow2.authzforce.core.pdp.api.AttributeFqns;
 import org.ow2.authzforce.core.pdp.api.DecisionRequest;
 import org.ow2.authzforce.core.pdp.api.DecisionRequestBuilder;
-import org.ow2.authzforce.core.pdp.api.DecisionResult;
 import org.ow2.authzforce.core.pdp.api.value.AttributeBag;
 import org.ow2.authzforce.core.pdp.api.value.AttributeDatatype;
 import org.ow2.authzforce.core.pdp.api.value.Bags;
@@ -35,45 +33,73 @@ public class Authorization {
 	private static Logger logger = LoggerFactory.getLogger(Authorization.class);
 	
 	private final BasePdpEngine pdp;
+	private static final AttributeDatatype<StringValue> CUSTOM_DATA_TYPE = new AttributeDatatype<>(StringValue.class, XacmlDatatypeId.STRING.value(), "demo.test.nu");
+	private static Authorization authorization;
 	
-	public Authorization() {
-		
+	static {
+		try {
+			System.setProperty("javax.xml.accessExternalSchema", "all");
+			URL url = App.class.getClassLoader().getResource("pdp.xml");
+			PdpEngineConfiguration pdpEngineConf = PdpEngineConfiguration.getInstance(url.toString());
+			
+			authorization = new Authorization(new BasePdpEngine(pdpEngineConf));
+		} catch (Exception e) {
+			throw new RuntimeException("Unable to create Authorization singleton", e);
+		}
 	}
 	
-	public boolean authorization(DecodedJWT jwt, Request httpRequest) throws IllegalArgumentException, IOException {
-		URL url = App.class.getClassLoader().getResource("pdp.xml");
-		PdpEngineConfiguration pdpEngineConf = PdpEngineConfiguration.getInstance(url.toString());
+	
+	private Authorization(BasePdpEngine pdp) { 
+		this.pdp = pdp;
+	}
+	
+	
+	public static Authorization getInstance() {
+		return authorization;
+	}
+        	
+	public boolean authorization(DecodedJWT jwt, Request httpRequest) {	
+		final DecisionRequest request = generateRequest(jwt, httpRequest);
+		return pdp.evaluate(request).getDecision() == DecisionType.PERMIT; 
 		
-		AttributeDatatype<StringValue> MY = new AttributeDatatype<>(StringValue.class, XacmlDatatypeId.STRING.value(), "demo.test.nu");
+	}
+
+
+	private DecisionRequest generateRequest(DecodedJWT jwt, Request httpRequest) {
+		/*
+		 * Extract the values needed for the request
+		 */
+		String subject = jwt.getSubject();
+		String role = jwt.getClaim("role").asString();
+		String resource = httpRequest.pathInfo();
+		String action = httpRequest.requestMethod();
 		
-		logger.info("Subject: {}, Role: {}, Resource: {}, and action: {}", jwt.getSubject(), jwt.getClaim("role").asString(), httpRequest.pathInfo(), httpRequest.requestMethod());
-		
-		try (BasePdpEngine pdp = new BasePdpEngine(pdpEngineConf)) {		
-			DecisionRequestBuilder<?> requestBuilder = pdp.newRequestBuilder(-1, -1);
-			// Add subject ID attribute
-			final AttributeFqn subjectIdAttributeId = AttributeFqns.newInstance(XACML_1_0_ACCESS_SUBJECT.value(), Optional.empty(), XacmlAttributeId.XACML_1_0_SUBJECT_ID.value());
-			final AttributeBag<?> subjectIdAttributeValues = Bags.singletonAttributeBag(StandardDatatypes.STRING, new StringValue(jwt.getSubject()));
-			requestBuilder.putNamedAttributeIfAbsent(subjectIdAttributeId, subjectIdAttributeValues);
-	
-			// Add subject role(s) attribute
-			final AttributeFqn subjectRoleAttributeId = AttributeFqns.newInstance(XACML_1_0_ACCESS_SUBJECT.value(), Optional.empty(), XacmlAttributeId.XACML_2_0_SUBJECT_ROLE.value());
-			final AttributeBag<?> roleAttributeValues = Bags.singletonAttributeBag(StandardDatatypes.STRING, new StringValue(jwt.getClaim("role").asString()));
-			requestBuilder.putNamedAttributeIfAbsent(subjectRoleAttributeId, roleAttributeValues);
-	
-			// Add resource ID attribute
-			final AttributeFqn resourceIdAttributeId = AttributeFqns.newInstance(XACML_3_0_RESOURCE.value(), Optional.empty(), XacmlAttributeId.XACML_1_0_RESOURCE_ID.value());
-			final AttributeBag<?> resourceIdAttributeValues = Bags.singletonAttributeBag(StandardDatatypes.STRING, new StringValue(httpRequest.pathInfo()));
-			requestBuilder.putNamedAttributeIfAbsent(resourceIdAttributeId, resourceIdAttributeValues);
-	
-			// Add action ID attribute
-			final AttributeFqn actionIdAttributeId = AttributeFqns.newInstance(XACML_3_0_ACTION.value(), Optional.empty(), "demo.test.nu");
-			final AttributeBag<?> actionIdAttributeValues = Bags.singletonAttributeBag(MY, new StringValue(httpRequest.requestMethod()));
-			requestBuilder.putNamedAttributeIfAbsent(actionIdAttributeId, actionIdAttributeValues);
-	
-			final DecisionRequest request = requestBuilder.build(false);
-			final DecisionResult result = pdp.evaluate(request);
-			return result.getDecision() == DecisionType.PERMIT; 
-		}
+		logger.debug("Subject: {}, Role: {}, Resource: {}, and action: {}", subject, role, resource, action);
+		/*
+		 * Package the request
+		 */
+		DecisionRequestBuilder<?> requestBuilder = pdp.newRequestBuilder(4, 4);
+		// Add subject ID attribute
+		final AttributeFqn subjectIdAttributeId = AttributeFqns.newInstance(XACML_1_0_ACCESS_SUBJECT.value(), Optional.empty(), XacmlAttributeId.XACML_1_0_SUBJECT_ID.value());
+		final AttributeBag<?> subjectIdAttributeValues = Bags.singletonAttributeBag(StandardDatatypes.STRING, new StringValue(subject));
+		requestBuilder.putNamedAttributeIfAbsent(subjectIdAttributeId, subjectIdAttributeValues);
+
+		// Add subject role(s) attribute
+		final AttributeFqn subjectRoleAttributeId = AttributeFqns.newInstance(XACML_1_0_ACCESS_SUBJECT.value(), Optional.empty(), XacmlAttributeId.XACML_2_0_SUBJECT_ROLE.value());
+		final AttributeBag<?> roleAttributeValues = Bags.singletonAttributeBag(StandardDatatypes.STRING, new StringValue(role));
+		requestBuilder.putNamedAttributeIfAbsent(subjectRoleAttributeId, roleAttributeValues);
+
+		// Add resource ID attribute
+		final AttributeFqn resourceIdAttributeId = AttributeFqns.newInstance(XACML_3_0_RESOURCE.value(), Optional.empty(), XacmlAttributeId.XACML_1_0_RESOURCE_ID.value());
+		final AttributeBag<?> resourceIdAttributeValues = Bags.singletonAttributeBag(StandardDatatypes.STRING, new StringValue(resource));
+		requestBuilder.putNamedAttributeIfAbsent(resourceIdAttributeId, resourceIdAttributeValues);
+
+		// Add action ID attribute
+		final AttributeFqn actionIdAttributeId = AttributeFqns.newInstance(XACML_3_0_ACTION.value(), Optional.empty(), "demo.test.nu");
+		final AttributeBag<?> actionIdAttributeValues = Bags.singletonAttributeBag(CUSTOM_DATA_TYPE, new StringValue(action));
+		requestBuilder.putNamedAttributeIfAbsent(actionIdAttributeId, actionIdAttributeValues);
+
+		return requestBuilder.build(false);
 	}
 
 }

@@ -5,8 +5,6 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.msc.camel.data.Customer;
 import com.msc.camel.routes.HttpRequestRoute;
 import com.msc.camel.routes.JettySimpleRoute;
 

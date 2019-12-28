@@ -44,9 +44,11 @@ public class App  {
     	} catch (ParameterException e) {
     		jc.usage();
     		logger.error("Unable to parse arguments!", e);
+    		console.error("Unhandled Exception. Please see logs for details!");    		
     		System.exit(-1);
     	} catch (Exception ex) {
     		logger.error("Application error!", ex);
+    		console.error("Unhandled Exception. Please see logs for details!");
     		System.exit(-1);
     	}
 
