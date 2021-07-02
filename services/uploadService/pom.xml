@@ -10,7 +10,7 @@
 
 	<properties>
 		<jdk.version>1.7</jdk.version>
-		<spring.security.version>3.2.3.RELEASE</spring.security.version>
+		<spring.security.version>5.4.4</spring.security.version>
 	</properties>
 
 
