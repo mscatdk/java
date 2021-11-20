@@ -2,7 +2,7 @@ package org.mscatdk.bilbasen;
 
 public class CarAdd {
 
-	public CarAdd(String key, String headline, String region, String price, String hk, String trailer, String kml, String km, String year, String bilbasenId) {
+	public CarAdd(String key, String headline, String region, String price, String hk, String trailer, String kml, String km, String year, String bilbasenId, String nypris) {
 		super();
 		this.key = key;
 		this.headline = headline;
@@ -14,6 +14,7 @@ public class CarAdd {
 		this.km = km;
 		this.year = year;
 		this.bilbasenId = bilbasenId;
+		this.nypris = nypris;
 	}
 	
 	String key;
@@ -26,13 +27,14 @@ public class CarAdd {
 	String km;
 	String year;
 	String bilbasenId;
+	String nypris;
 	
 	public static String[] getHeader() {
-		return new String[]{"key", "headline", "region", "price", "hk", "trailer", "km/l", "km", "year", "bilbasenId"};
+		return new String[]{"key", "headline", "region", "price", "hk", "trailer", "km/l", "km", "year", "bilbasenId", "nypris"};
 	}
 	
 	public String[] getData() {
-		return new String[]{key, headline, region, price, hk, trailer, kml, km, year, bilbasenId};
+		return new String[]{key, headline, region, price, hk, trailer, kml, km, year, bilbasenId, nypris};
 	}
 
 	public String getKey() {

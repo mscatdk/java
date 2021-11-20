@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 
 import com.msc.res.jx.model.DataObj;
 
-@Path(Config.DemoPath)
+@Path("/demo")
 public class Demo {
 
 	@GET

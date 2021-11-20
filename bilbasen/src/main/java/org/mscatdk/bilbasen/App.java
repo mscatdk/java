@@ -27,6 +27,7 @@ public class App {
 			} else {
 				jc.usage();
 			}
+			console.info("Done");
 		} catch (Exception e) {
 			console.info("Expection with message {}", e.getMessage());
 			logger.error("unhandled exception.", e);

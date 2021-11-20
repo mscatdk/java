@@ -63,7 +63,11 @@ public class Bilbasen {
 				String km = readNumber(divs.get(1).text());
 				String year = divs.get(2).text();
 				
-				carAdds.add(new CarAdd(key, headline, region, price, hk, trailer, kml, km, year, id));
+				Document details = getDocument(new URL("https://www.bilbasen.dk/" + id));
+
+			    String nypris = readNumber(details.select("#bannerwrapper > div > div.bbVipWrapper.cf > div.column1 > div:nth-child(7) > table > tbody > tr:nth-child(2) > td.selectedcar").text());
+				
+				carAdds.add(new CarAdd(key, headline, region, price, hk, trailer, kml, km, year, id, nypris));
 			} catch (Exception e) {
 				logger.error("Unable to process record. Div: {}", div, e);
 			}
@@ -73,7 +77,7 @@ public class Bilbasen {
 	}
 	
 	private String readNumber(String text) {
-		return text.replace(".", "").replace(",", ".").trim();
+		return text.replace(".", "").replace(",", ".").replace("kr", "").trim();
 	}
 	
 	

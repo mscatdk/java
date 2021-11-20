@@ -25,8 +25,8 @@ public class GenerateJWT extends DefaultCommand implements CommandInterface {
 			RSAPrivateKey privateKey = keyPairHandler.loadPrivateKey(keyPairHandler.getPrivateKeyPath(super.keyPath));
 			Algorithm algorithm = Algorithm.RSA256(publicKey, privateKey);
 			String token = JWT.create()
-				        		.withIssuer("FakeToken")
-				        		.withSubject("Mike")
+				        		.withIssuer("http://test.nordea.com/fakeauth")
+				        		.withSubject("INPUTT")
 				        		.withClaim("role", "user")
 				        		.sign(algorithm);
 			
