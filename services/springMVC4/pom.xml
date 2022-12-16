@@ -10,7 +10,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.3.18</spring.version>
+		<spring.version>6.0.0</spring.version>
 		<cucumber.version>1.2.4</cucumber.version>
 		<selenium.version>2.48.2</selenium.version>
 	</properties>
