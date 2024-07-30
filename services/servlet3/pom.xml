@@ -10,7 +10,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<webjars.bootstap.version>3.3.6</webjars.bootstap.version>
+		<webjars.bootstap.version>3.4.0</webjars.bootstap.version>
 		<webjars.jquery.version>3.1.1</webjars.jquery.version>
 	</properties>
 
